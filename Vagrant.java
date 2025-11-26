@@ -1,7 +1,7 @@
 public class Vagrant extends NPC {
 
-    public Vagrant(Room startingRoom, Item desiredItem, Item rewardItem) {
-        super("Vagrant", startingRoom, desiredItem, rewardItem);
+    public Vagrant(Room startingRoom, Item desiredItem, Item rewardItem, MemoryBlock memoryBlock) {
+        super("Vagrant", startingRoom, desiredItem, rewardItem, memoryBlock);
     }
 
     @Override
@@ -12,6 +12,10 @@ public class Vagrant extends NPC {
 
             if(rewardItem != null) {
                 player.addToInventory(rewardItem);
+            }
+
+            if(memoryBlock != null) {
+                player.getJournal().addMemory(memoryBlock);
             }
 
             dialogue.clear();

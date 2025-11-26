@@ -10,6 +10,16 @@ public class InteractCommand implements CommandHandler{
         StringBuilder sb = new StringBuilder();
         sb.append(player.getCurrentRoom().interactNPC(player));
 
+
+
+        if(player.getCurrentRoom().getName().toLowerCase().equalsIgnoreCase("pin")) {
+
+            sb.append(player.getCurrentRoom().getLongDescription());
+
+
+        }
+
+
         return sb.toString();
 
 

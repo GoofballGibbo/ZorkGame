@@ -8,21 +8,24 @@ public abstract class NPC extends Character  {
     protected Item desiredItem;
     protected Item rewardItem;
     protected StringBuilder sb;
+    protected MemoryBlock memoryBlock;
 
-    public NPC(String name, Room startingRoom, Item desiredItem, Item rewardItem) {
+
+    public NPC(String name, Room startingRoom, Item desiredItem, Item rewardItem, MemoryBlock memoryBlock) {
         super(name, startingRoom);
         dialogue = new ArrayList<>();
         inventory = new ArrayList<>();
         sb = new StringBuilder();
         this.desiredItem = desiredItem;
         this.rewardItem = rewardItem;
+        this.memoryBlock = memoryBlock;
     }
 
-    public NPC(String name, Room startingRoom) {
+   /* public NPC(String name, Room startingRoom) {
         super(name, startingRoom);
         dialogue = new ArrayList<>();
         inventory = new ArrayList<>();
-    }
+    }*/
 
     // Implemented method
     public void addDialogue(String dialogues) {
@@ -59,6 +62,18 @@ public abstract class NPC extends Character  {
 
     public ArrayList<Item> getInventory() {
         return inventory;
+    }
+
+    public boolean containsTradeItem(Item item) {
+        if(currentRoom.containsItems(item)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void initateTrade(Item item) {
+        currentRoom.removeItems(item.getName());
+        inventory.add(item);
     }
 
 

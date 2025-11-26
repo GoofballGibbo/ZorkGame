@@ -21,6 +21,7 @@ public class CommandWords {
         validCommands.put("search", "search for an item");
         validCommands.put("save", "save the game");
         validCommands.put("load", "load the game");
+        validCommands.put("code", "Command to input pin code");
 
         sb = new StringBuilder();
 

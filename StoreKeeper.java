@@ -1,7 +1,7 @@
 public class StoreKeeper extends NPC{
 
-    public StoreKeeper(Room startingRoom, Item desiredItem, Item rewardItem){
-        super("StoreKeeper", startingRoom, desiredItem, rewardItem);
+    public StoreKeeper(Room startingRoom, Item desiredItem, Item rewardItem, MemoryBlock memoryBlock){
+        super("StoreKeeper", startingRoom, desiredItem, rewardItem, memoryBlock);
     }
 
     @Override
@@ -12,6 +12,11 @@ public class StoreKeeper extends NPC{
 
             if (rewardItem != null) {
                 player.addToInventory(rewardItem);
+            }
+
+            if(memoryBlock != null) {
+                player.getJournal().addMemory(memoryBlock);
+
             }
 
             dialogue.clear();

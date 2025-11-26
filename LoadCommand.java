@@ -1,16 +1,21 @@
 import java.io.*;
-import java.util.HashMap;
+import java.util.*;
 
 public class LoadCommand implements CommandHandler {
-    private String fileName;
-    private HashMap<String, Room> allRooms = new HashMap<>();
 
-    public LoadCommand(HashMap<String, Room> allRooms, String fileName) {
-        this.allRooms = allRooms;
-        this.fileName = fileName;
+    private final ZorkULGame game;
+
+    /*private String fileName;
+    private Map<String, Room> allRooms = new HashMap<>();*/
+
+    public LoadCommand(ZorkULGame game) {
+        this.game = game;
     }
 
     public String execute(Command command, Player player) {
+        return game.loadGame();
+
+        /*
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(fileName))) {
             allRooms = (HashMap<String, Room>) input.readObject();
             player = (Player) input.readObject();
@@ -19,7 +24,7 @@ public class LoadCommand implements CommandHandler {
         } catch (IOException  | ClassNotFoundException i) {
             i.printStackTrace();
             return "Failed to load game";
-        }
+        }*/
 
 
 

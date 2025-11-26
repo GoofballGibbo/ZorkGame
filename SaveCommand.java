@@ -1,17 +1,24 @@
 import java.io.*;
-import java.util.HashMap;
+import java.util.*;
+
 
 
 public class SaveCommand implements CommandHandler {
-    private String fileName;
-    private HashMap<String, Room> allRooms = new HashMap<>();
+   /* private String fileName;
+    private HashMap<String, Room> allRooms = new HashMap<>();*/
+
+    private final ZorkULGame game;
 
 
-    public SaveCommand(HashMap<String, Room> allRooms, String fileName) {
-        this.allRooms = allRooms;
-        this.fileName = fileName;
+    public SaveCommand(ZorkULGame game) {
+       this.game = game;
     }
     public String execute(Command command, Player player) {
+        return game.saveGame();
+
+    }
+
+        /*
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))) {
             out.writeObject(allRooms);
             out.writeObject(player);
@@ -21,7 +28,10 @@ public class SaveCommand implements CommandHandler {
             i.printStackTrace();
             return "Failed to save game" + i;
         }
-    }
+    }*/
+
+
+
     }
 
 

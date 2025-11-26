@@ -14,8 +14,14 @@ public class Journal extends Item {
     public void addEntry(String note) {
         entries.add(note);
     }
+
     public void addMemory(MemoryBlock memory) {
-       memoryEntry.add(memory);
+        for (MemoryBlock mem : memoryEntry) {
+            if (mem.getDescription().equals(memory.getDescription())) {
+                return; // memory already exists, do not add
+            }
+        }
+        memoryEntry.add(memory); // add if not found
     }
 
     public void removeMemory(MemoryBlock memory) {
@@ -57,6 +63,13 @@ public class Journal extends Item {
         return false;
     }
 
+    public boolean hasMemory(MemoryBlock memoryBlock) {
+        if(memoryEntry.contains(memoryBlock)) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean hasMemoryEntry(String keyword) {
         for (MemoryBlock mem : memoryEntry) {
             if(mem.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
@@ -64,6 +77,11 @@ public class Journal extends Item {
             }
         }
         return false;
+    }
+
+    public int memoryEntrySize() {
+        return memoryEntry.size();
+
     }
 
 }

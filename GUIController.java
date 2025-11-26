@@ -122,6 +122,10 @@ public class GUIController {
 
         switch(guiRoom) {
 
+            case "pin":
+                imageView.setImage(new Image(getClass().getResource("/images/PinCode.jpeg").toExternalForm()));
+                break;
+
             case "bench":
                 imageView.setImage(new Image(getClass().getResource("/images/PixelBench.png").toExternalForm()));
                 break;

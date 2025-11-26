@@ -2,24 +2,31 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
 
 
 public class Player extends Character {
-    private HashMap<String, Item> inventory;
+    private Map<String, Item> inventory;
     private Room currentRoom;
     private boolean quit = false;
+    private Journal journal;
 
     public Player(String name, Room startingRoom) {
         super(name, startingRoom);
         this.currentRoom = startingRoom;
         inventory = new HashMap<>();
+        this.journal = new Journal();
     }
     public void addToInventory(Item item) {
         inventory.put(item.getName().toLowerCase(), item);
     }
 
+    public Journal getJournal() {
+        return journal;
+    }
+
     public void addToInventory(Journal journal) {
+        this.journal = journal;
         inventory.put("Journal", journal);
     }
 
@@ -46,9 +53,7 @@ public class Player extends Character {
     public void removeFromInventory(Item item) {
         inventory.remove(item.getName().toLowerCase());
     }
-    public Set<String> getInventoryKeys() {
-        return inventory.keySet();
-    }
+
 
     public Item convertItemStringtoItemObject(String itemName) {
         Item item = getItemFromInventory(itemName);

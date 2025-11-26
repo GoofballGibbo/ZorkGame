@@ -4,7 +4,7 @@ public class Command {
     private String thirdWord;
     private String[] args;
 
-    public Command(String firstWord, String secondWord) {
+    /*public Command(String firstWord, String secondWord) {
         this.commandWord = firstWord;
         this.secondWord = secondWord;
     }
@@ -12,9 +12,9 @@ public class Command {
         this.commandWord = firstWord;
         this.secondWord = secondWord;
         this.thirdWord = thirdWord;
-    }
+    }*/
 
-    public Command(String commandWord, String... args) {
+   public Command(String commandWord, String... args) {
         this.commandWord = commandWord;
         this.args = args;
     }

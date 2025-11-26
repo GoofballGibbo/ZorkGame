@@ -3,19 +3,27 @@ import java.util.ArrayList;
 public class Clerk extends NPC {
 
 
-    public Clerk(Room startingRoom, Item desiredItem, Item rewardItem) {
-        super("Clerk", startingRoom, desiredItem, rewardItem);
+    public Clerk(Room startingRoom, Item desiredItem, Item rewardItem, MemoryBlock memoryBlock) {
+        super("Clerk", startingRoom, desiredItem, rewardItem, memoryBlock);
     }
 
 
     @Override
     public void checkTrade(Player player) {
-        if (currentRoom.containsItems(desiredItem)) {
+
+        if(containsTradeItem(desiredItem)) {
+            initateTrade(desiredItem);
+        }
+        /*if (currentRoom.containsItems(desiredItem)) {
             currentRoom.removeItems(desiredItem.getName());
-            inventory.add(desiredItem);
+            inventory.add(desiredItem); }*/
 
             if(rewardItem != null) {
                 player.addToInventory(rewardItem);
+            }
+
+            if(memoryBlock != null) {
+                player.getJournal().addMemory(memoryBlock);
             }
 
             dialogue.clear();
@@ -31,7 +39,7 @@ public class Clerk extends NPC {
                 //System.out.println(line);
                 sb.append(line);
             }
-        }
+
     }
 }
 

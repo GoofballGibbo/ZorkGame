@@ -25,6 +25,7 @@ public class GoCommand implements CommandHandler{
         }
         player.setCurrentRoom(nextRoom);
         sb.append(player.getCurrentRoom().getLongDescription());
+
         //System.out.println(player.getCurrentRoom().getLongDescription());
         return sb.toString();
     }

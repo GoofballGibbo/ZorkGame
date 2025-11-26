@@ -36,6 +36,15 @@ public class ZorkULGame{
     private MemoryBlock motelLobbyMemory;
     private MemoryBlock motelRoomMemory;
     private MemoryBlock warehouseMemory;
+    protected Room bench;
+    protected Room store;
+    protected Room alley;
+    protected Room policeStation;
+    protected Room motelLobby;
+    protected Room motelRoom;
+    protected Room warehouse;
+    protected Room pinCode;
+
 
 
 
@@ -51,9 +60,9 @@ public class ZorkULGame{
 
     }
 
-    private void createRooms() {
+    public void createRooms() {
         //Room outside, theatre, pub, lab, office, studentcentre, bench, store;
-        Room bench, store, motelLobby, alley, policeStation, motelRoom, warehouse, pinCode;
+
 
         // create rooms
         bench = new Room("Bench","You wake on a bench beneath a dying streetlight.\nA name is scrawled on your arm, but it isn’t yours.\nYour head throbs — memories flash, fade, vanish.\nYou’re not sure what you’ve lost... only that someone took it.");
@@ -113,7 +122,7 @@ public class ZorkULGame{
         store.addItem(checking);
 
         //NPC initialisation
-        Clerk clerk = new Clerk(policeStation, photoID, motelKey);
+        Clerk clerk = new Clerk(policeStation, photoID, motelKey, storeMemory);
 
 
         clerk.addDialogue("The clerk eyes you carefully. 'I can't just hand this over to anyone…'");
@@ -122,14 +131,14 @@ public class ZorkULGame{
         policeStation.addNPC(clerk);
 
 
-        Vagrant vagrant = new Vagrant( alley, sandwich, photoID);
+        Vagrant vagrant = new Vagrant( alley, sandwich, photoID, alleyMemory);
 
         vagrant.addDialogue("‘Got anything to eat?’ he croaks, eyes glinting under the flicker of a streetlamp.");
         vagrant.addDialogue("‘A bite for a bit of truth, yeah? I can tell you things.’");
 
         alley.addNPC(vagrant);
 
-        MotelManager motelManager = new MotelManager(motelRoom, motelKey);
+        MotelManager motelManager = new MotelManager(motelLobby, motelKey, motelRoom);
 
         motelManager.addDialogue("‘Back again, huh?’ she says slowly. ‘You look… different this time.’");
         motelManager.addDialogue("Her eyes flick toward a small box on the shelf.");
@@ -138,7 +147,7 @@ public class ZorkULGame{
 
         motelLobby.addNPC(motelManager);
 
-        StoreKeeper storeKeeper = new StoreKeeper(store, crumpledBill, sandwich);
+        StoreKeeper storeKeeper = new StoreKeeper(store, crumpledBill, sandwich, storeMemory);
         storeKeeper.addDialogue("The store keeper looks up from a worn ledger.");
         storeKeeper.addDialogue("'Back again, are you?' he asks, squinting. 'You always come by when the nights are long.'");
         storeKeeper.addDialogue("He hesitates, searching your face. 'You… don’t remember me, do you?'");
@@ -154,13 +163,18 @@ public class ZorkULGame{
 
         alley.setExit("east", motelLobby);
         alley.setExit("north", policeStation);
+        alley.setExit("south", pinCode);
+
+        pinCode.setExit("north", alley);
 
         policeStation.setExit("south", alley);
 
-        motelLobby.setExit("west", alley);
-        motelLobby.setExit("east", motelRoom);
+        motelLobby.setExit("south", alley);
+        motelLobby.setExit("west", bench);
 
-        motelRoom.setExit("west", motelLobby);
+       // motelLobby.setExit("east", motelRoom);
+
+        //motelRoom.setExit("west", motelLobby);
 
 
         allRooms.put(bench.getName(), bench);
@@ -169,6 +183,7 @@ public class ZorkULGame{
         allRooms.put(store.getName(), store);
         allRooms.put(motelLobby.getName(), motelLobby);
         allRooms.put(motelRoom.getName(), motelRoom);
+        allRooms.put(warehouse.getName(), warehouse);
 
 /*
  outside = new Room("outside the main entrance of the university");
@@ -202,6 +217,10 @@ public class ZorkULGame{
         player.addToInventory(crumpledBill);
         player.addToInventory(journal);
         journal.addMemory(benchMemory);
+
+    }
+
+    public void initMemories() {
 
     }
 
@@ -243,6 +262,10 @@ public class ZorkULGame{
         String commandWord = command.getCommandWord();
         Room currentRoom = player.getCurrentRoom();
 
+
+            // If commandWord is null, let normal handling continue
+
+
         if(commandWord == null) {
             sb.append("I don't know what you mean.\n");
             return false;
@@ -267,15 +290,38 @@ public class ZorkULGame{
         try {
             String result = handler.execute(command, player);
             sb.append(result).append("\n");
+            /*if(player.getCurrentRoom() == alley) {
+                journal.addMemory(alleyMemory);
+            }
+            if(player.getCurrentRoom() == motelLobby) {
+                journal.addMemory(motelLobbyMemory);
+            }
+            if(player.getCurrentRoom() == store) {
+                journal.addMemory(storeMemory);
+            }
+            if(player.getCurrentRoom() == motelRoom ) {
+                journal.addMemory(motelRoomMemory);
+            }*/
 
+            if(player.getCurrentRoom() == warehouse) {
+                journal.addMemory(warehouseMemory);
+                sb.append(gameEnding()).append("\n");
+                player.setQuit(true);  //
+
+            }
         } catch(Exception e) {
             //System.out.println("Invalid command: " + commandWord);
-            sb.append("Invalid command: " + commandWord + "\n");
+            sb.append("Invalid command: ").append(commandWord).append("\n");
 
 
                 sb.append("I don't know what you mean.\n");
         }
         return player.hasQuit();
+
+
+
+
+
 
 
 
@@ -398,8 +444,9 @@ public class ZorkULGame{
         commandHandlers.put("search", new SearchCommand());
         commandHandlers.put("inspect", new InspectCommand());
         commandHandlers.put("drop", new DropCommand());
-        commandHandlers.put("save", new SaveCommand(allRooms, fileName));
-        commandHandlers.put("load", new LoadCommand(allRooms, fileName));
+        commandHandlers.put("save", new SaveCommand(this));
+        commandHandlers.put("load", new LoadCommand(this));
+        commandHandlers.put("code", new CodeCommand("4815", allRooms));
 
         //commandHandlers.put("load", new LoadCommand());
 
@@ -410,7 +457,33 @@ public class ZorkULGame{
         return journal;
     }
 
-    public void goRoom(Command command) {
+    public String gameEnding() {
+        int memoryCount = journal.memoryEntrySize();
+        Stranger stranger = new Stranger(warehouse);
+        stranger.updateMemoryLevel(memoryCount);
+
+        StringBuilder ending = new StringBuilder();
+        ending.append("You enter the warehouse, the final place your memories have guided you to.\n\n");
+        ending.append(stranger.getDialogue()).append("\n\n");
+        stranger.clearDialogue();
+
+        if(memoryCount < 3) {
+            ending.append("Despite your efforts, many memories remain lost. Some truths may never be recovered.\n");
+            ending.append("But perhaps that’s a part of life—you can only move forward with what you know.\n");
+        } else if(memoryCount < 7) {
+            ending.append("You’ve remembered enough to understand most of your journey.\n");
+            ending.append("Pieces fall into place, but a few shadows linger. Still, you feel ready to move on.\n");
+        } else {
+            ending.append("Every memory aligns. The fragments finally form a complete picture.\n");
+            ending.append("You understand your past, your actions, and yourself. This is closure.\n");
+            ending.append("You leave the warehouse knowing who you are, finally free to move forward.\n");
+        }
+
+        ending.append("=== THE END ===");
+        return ending.toString();
+    }
+
+   /* public void goRoom(Command command) {
         if (!command.hasSecondWord()) {
             sb.append("Go where?");
             //System.out.println("Go where?");
@@ -429,15 +502,14 @@ public class ZorkULGame{
 
             switch(player.getCurrentRoom().getName().toLowerCase()) {
                 case "bench":
-                    journal.addMemory(benchMemory);
+                        journal.addMemory(benchMemory);
                     break;
                 case "store":
-                    journal.addMemory(storeMemory);
+                        journal.addMemory(storeMemory);
+
                     break;
                 case "alley":
-                    if(player.hasItemInInventory("Sandwich")) {
                         journal.addMemory(alleyMemory);
-                    }
                     break;
                 case "police station":
                     journal.addMemory(policeMemory);
@@ -453,12 +525,12 @@ public class ZorkULGame{
                     break;
             }
         }
-    }
+    }*/
 
     public String saveGame() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            out.writeObject(allRooms);
-            out.writeObject(player);
+            out.writeObject(this.allRooms);
+            out.writeObject(this.player);
             return "Game saved successfully";
 
         } catch (IOException i) {
@@ -480,6 +552,9 @@ public class ZorkULGame{
         }
 
     }
+
+
+
 
     public static void main(String[] args) {
         ZorkULGame game = new ZorkULGame();
