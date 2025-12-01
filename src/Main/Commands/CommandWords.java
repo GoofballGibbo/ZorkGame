@@ -23,24 +23,26 @@ public class CommandWords {
         validCommands.put("save", "save the game");
         validCommands.put("load", "load the game");
         validCommands.put("code", "Command to input pin code");
+        validCommands.put("cheat", "Get to ending");
+
 
         sb = new StringBuilder();
 
     }
 
     public boolean isCommand(String commandWord) {
-        System.out.println("CHECKING COMMAND: " + commandWord);
-        System.out.println("CURRENT COMMAND LIST: " + validCommands.keySet());
         return validCommands.containsKey(commandWord);
     }
 
     public String showAll() {
 
-        System.out.print("Valid commands are: ");
-        sb.append("Valid commands are: ");
-        for (String command : validCommands.keySet()) {
+
+        for (Map.Entry<String, String> entry : validCommands.entrySet()) {
             //System.out.print(command + " ");
-            sb.append(command + "\n");
+            sb.append(entry.getKey())
+                    .append(" : ")
+                    .append(entry.getValue())
+                    .append("\n");
         }
         return sb.toString();
     }

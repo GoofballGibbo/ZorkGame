@@ -86,7 +86,7 @@ public class Parser  {
         }
 
         String mainCommand = parsedWords.get(0).toLowerCase().trim();
-        System.out.println("DEBUG CMD = [" + mainCommand + "]");
+
         // It creates a sub list after index 0 and creates an array. java automatically sets the size of array when you type toArray(new String[0])
 
         String argString = "";
@@ -116,7 +116,6 @@ public class Parser  {
             return new Command(null);
         }
         String mainCommand = parsedWords.get(0).toLowerCase().trim();
-        System.out.println("DEBUG CMD = [" + mainCommand + "]");
         // It creates a sub list after index 0 and creates an array. java automatically sets the size of array when you type toArray(new String[0])
         String[] args = parsedWords.subList(1, parsedWords.size())
                 .toArray(new String[0]);

@@ -72,7 +72,7 @@ public class GUIController {
         inventoryPane.setVgap(15);   // space between icons top–bottom
         inventoryPane.setPrefWrapLength(200); // optional: controls wrapping
 
-        for (Item item : game.getPlayer().getInventory().values()) {
+        for (Item item : game.getPlayer().getInventory().getAllItems()) {
             String path = item.getImagePath();
             if (path != null) {
                 ImageView icon = new ImageView(new Image(getClass().getResource(path).toExternalForm()));

@@ -21,18 +21,18 @@ public class DropCommand implements CommandHandler {
 
         // Join all args into one string and lowercase it
         String itemName = String.join(" ", args).trim().toLowerCase();
+        Item item = player.getItemFromInventory(itemName);
+        if(item instanceof Journal) {
+            return "You can't drop the journal";
 
-        if (player.hasItemInInventory(itemName)) {
-            Item item = player.getItemFromInventory(itemName);
+        }
+         if (player.hasItemInInventory(itemName)) {
             player.removeFromInventory(item);
             player.getCurrentRoom().addItem(item);
             for (NPC npc : player.getCurrentRoom().getNPCs()) {
                 npc.checkTrade(player);
             }
             return itemName + " has been dropped.\n";
-        } else if(player.hasItemInInventory(player.getJournal()) ) {
-            return "You can't drop the journal";
-
         }
         else {
             return "You don't have " + itemName + " in your inventory.\n";

@@ -1,4 +1,6 @@
 package Main.Main;
+
+
 /* This game is a classic text-based adventure set in a university environment.
  The player starts outside the main entrance and can navigate through different rooms like a
  lecture theatre, campus pub, computing lab, and admin office using simple text commands (e.g., "go east", "go west").
@@ -23,6 +25,7 @@ import Main.CommandsInterface.CommandHandler;
 import Main.Parser.*;
 import Main.Rooms.*;
 import Main.Items.*;
+import Main.Audio.*;
 
 public class ZorkULGame{
     private Parser parser;
@@ -31,6 +34,7 @@ public class ZorkULGame{
     private Map<String, CommandHandler> commandHandlers = new HashMap<>();
     protected HashMap<String, Room> allRooms;
     protected String fileName;
+    private AudioPlayer audio;
     private ZorkULGame game;
     private Journal journal;
     private MemoryBlock benchMemory;
@@ -66,7 +70,9 @@ public class ZorkULGame{
         fileName = "Savegame.dat";
         initCommands();
 
-
+        audio = new AudioPlayer("/AudioFiles/Background.wav");
+        audio.setVolume(-12.0f);
+        audio.playLoop();
     }
 
 
@@ -283,7 +289,7 @@ public class ZorkULGame{
 
 */
         // create the player character and start outside
-        player = new Player("player", bench);
+        player = new Player("player", bench, journal);
         player.addToInventory(crumpledBill);
         player.addToInventory(journal);
         journal.addMemory(benchMemory);;
@@ -305,6 +311,10 @@ public class ZorkULGame{
         //System.out.println("Thank you for playing. Goodbye.\n");
     }
 
+    public Journal getJournal() {
+        return journal;
+
+    }
 
     public void printWelcome() {
 
@@ -345,10 +355,7 @@ public class ZorkULGame{
 
         commandWord = commandWord.toLowerCase().trim();
 
-        System.out.println("DEBUG: commandWord=[" + commandWord + "]" + input.toString());
-        for (String key : commandHandlers.keySet()) {
-            System.out.println("DEBUG: handler key=[" + key + "]");
-        }
+
 
         CommandHandler handler = commandHandlers.get(commandWord);
 
@@ -382,7 +389,7 @@ public class ZorkULGame{
                 // Check both inventory and room items (in case key was dropped)
                 boolean hasKey = player.hasItemInInventory(key) || current.containsItems(key);
 
-                System.out.println(player.inventoryContainsItemKey(key));
+                System.out.println(player.hasItemInInventory(key));
                 System.out.println(current.containsItems(key));
 
                 if (hasKey) {
@@ -452,6 +459,7 @@ public class ZorkULGame{
         commandHandlers.put("load", new LoadCommand(this));
         commandHandlers.put("code", new CodeCommand("4815", allRooms));
         commandHandlers.put("help", new HelpCommand(this));
+        commandHandlers.put("cheat", new CheatCommand(this));
 
         //commandHandlers.put("load", new LoadCommand());
 
@@ -462,9 +470,7 @@ public class ZorkULGame{
         return player;
     }
 
-    public Journal getJournal() {
-        return journal;
-    }
+
 
     public String gameEnding() {
         int memoryCount = journal.memoryEntrySize();
@@ -521,6 +527,32 @@ public class ZorkULGame{
             i.printStackTrace();
             return "Failed to load game";
         }
+
+    }
+
+    public void cheat() {
+        player.getJournal().addMemory(benchMemory);
+        player.getJournal().addMemory(storeMemory);
+        player.getJournal().addMemory(alleyMemory);
+        player.getJournal().addMemory(policeMemory);
+        player.getJournal().addMemory(motelLobbyMemory);
+        player.getJournal().addMemory(motelRoomMemory);
+        player.getJournal().addMemory(warehouseMemory);
+        player.getJournal().addMemory(churchInteriorMemory);
+
+        player.setCurrentRoom(warehouse);
+
+
+
+        benchMemory = new MemoryBlock("You wake up on this bench, the streetlight flickering above. The sensation of being watched… but by who?");
+        storeMemory = new MemoryBlock("The smell of old snacks triggers a flash: a face you vaguely recognize smiles at you behind the counter.");
+        alleyMemory = new MemoryBlock("A man wrapped in rags whispers your name. Something about a meeting at midnight.");
+        policeMemory = new MemoryBlock("A drawer slightly ajar… you remember hiding something important here long ago.");
+        motelLobbyMemory = new MemoryBlock("The neon light flickers. Room 23… your old room. You recall a promise made here.");
+        motelRoomMemory = new MemoryBlock("Dust motes dance in the sunlight. Fragments of a journal you once wrote float into your mind.");
+        warehouseMemory = new MemoryBlock("Crates stacked high. You see a logo that sparks a memory of someone guiding you here before…");
+        churchInteriorMemory = new MemoryBlock("You feel a chill go up your spine. There's something amiss here. ");
+
 
     }
 
