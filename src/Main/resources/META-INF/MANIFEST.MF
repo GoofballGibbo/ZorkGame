@@ -1,0 +1,2 @@
+Main-Class: game.GUI.Game
+Class-Path: ./lib/ZorkGame.jar

@@ -3,3 +3,7 @@ lib
 out/
 *.iml
 *.class
+*.dat
+*.sh
+*.DS_Store
+target/

@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="725.0" prefWidth="680.0" style="-fx-background-color: #020617;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.GUI.GUIController">
+<BorderPane prefHeight="725.0" prefWidth="680.0" style="-fx-background-color: #020617;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GUI.GUIController">
 
     <!-- TOP: Scene Image Display -->
     <top>
@@ -46,7 +46,7 @@
         </StackPane>
     </top>
 
-    <!-- CENTER: Main Game Area -->
+    <!-- CENTER: game Game Area -->
     <center>
         <BorderPane>
             <!-- LEFT: Character Sidebar -->
