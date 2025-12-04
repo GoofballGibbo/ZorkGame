@@ -37,18 +37,13 @@ Java 17 or higher
 A terminal or command line environment
 
 Clone or Download the Repository:
-git clone https://github.com/yourusername/memento-lost-memories.git
+git clone git@github.com:GoofballGibbo/ZorkGame.git
 
-cd memento-lost-memories
+cd ZorkGame
 
-Compile the Java Files:
+Compile all the files
 
-javac Main/*.java Main/Commands/*.java
-
-Run the Game:
-java Main.MementoEpic
-
-
+Run using the launcher in the Game file in the GUI folder.
 
 
 
