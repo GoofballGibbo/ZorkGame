@@ -330,7 +330,7 @@ public class ZorkULGame{
 
 */
         // create the player character and start outside
-        player = new Player("player", bench, journal, this);
+        player = new Player("player", bench, journal);
         player.addToInventory(crumpledBill);
         journal.addMemory(benchMemory);;
 
