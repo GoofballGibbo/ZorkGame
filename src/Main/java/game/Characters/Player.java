@@ -12,14 +12,13 @@ public class Player extends Character {
     private Inventory<Item> inventory;  // Generic Inventory
     private boolean quit = false;
     private Journal journal;
-    private ZorkULGame game;
+   
 
-    public Player(String name, Room startingRoom, Journal journal, ZorkULGame game) {
+    public Player(String name, Room startingRoom, Journal journal) {
         super(name, startingRoom);
         this.currentRoom = startingRoom;
         this.inventory = new Inventory<>();
         this.journal = journal;
-        this.game = game;
         addToInventory(journal);
 
     }
@@ -81,9 +80,7 @@ public class Player extends Character {
         this.quit = quit;
     }
 
-    public ZorkULGame getGame() {
-        return game;
-    }
+  
 
 
 }
